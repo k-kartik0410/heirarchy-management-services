@@ -26,7 +26,7 @@ public class UserEntity {
 		String referralCode;
 		
 		@Column(name = "PARENT_ID")
-		String parentId;
+		String parent;
 		
 		@Column(name = "H_LEVEL")
 		int hLevel;
@@ -35,12 +35,12 @@ public class UserEntity {
 			super();
 		}
 
-		public UserEntity(String fullName, String phoneNo, String referralCode, String parentId, int hLevel) {
+		public UserEntity(String fullName, String phoneNo, String referralCode, String parent, int hLevel) {
 			super();
 			this.fullName = fullName;
 			this.phoneNo = phoneNo;
 			this.referralCode = referralCode;
-			this.parentId = parentId;
+			this.parent = parent;
 			this.hLevel = hLevel;
 		}
 
@@ -77,11 +77,11 @@ public class UserEntity {
 		}
 
 		public String getParentId() {
-			return parentId;
+			return parent;
 		}
 
 		public void setParentId(String parentId) {
-			this.parentId = parentId;
+			this.parent = parentId;
 		}
 
 		public int gethLevel() {

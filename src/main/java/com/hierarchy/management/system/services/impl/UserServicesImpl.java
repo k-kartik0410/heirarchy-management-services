@@ -30,8 +30,8 @@ public class UserServicesImpl implements UserService {
 
 	@Override
 	public UserEntity getUserByPhoneNo(String PhoneNo) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return userRepository.getByPhoneNo(PhoneNo);
 	}
 
 	@Override

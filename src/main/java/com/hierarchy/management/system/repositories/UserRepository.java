@@ -9,6 +9,8 @@ import com.hierarchy.management.system.entities.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, String>{
 	
 	public UserEntity getByReferralCode(String referralCode);
+	
+	public UserEntity getByPhoneNo(String phoneNo);
 
 	
 }
