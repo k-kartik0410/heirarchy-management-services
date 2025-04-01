@@ -54,7 +54,7 @@ public class UserController {
 	public ResponseEntity<UserResponseModel> getUsers(@PathVariable String phoneNo){
 		
 		UserResponseModel userResponseModel = new UserResponseModel();
-		UserEntity userEntity = userService.getUserByPhoneNo(phoneNo);
+		UserEntity userEntity = userService.getUserByPhoneNo(phoneNo).get();
 		userResponseModel.setFullName(userEntity.getFullName());
 		userResponseModel.setParent(userEntity.getParentId());
 		userResponseModel.setPhoneNo(userEntity.getPhoneNo());

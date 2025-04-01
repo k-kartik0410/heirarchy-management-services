@@ -1,5 +1,6 @@
 package com.hierarchy.management.system.services.impl;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ public class UserServicesImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity getUser(String id) {
+	public Optional<UserEntity> getUser(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public UserEntity getUserByPhoneNo(String PhoneNo) {
+	public Optional<UserEntity> getUserByPhoneNo(String PhoneNo) {
 		
 		return userRepository.getByPhoneNo(PhoneNo);
 	}
@@ -39,7 +40,7 @@ public class UserServicesImpl implements UserService {
 		String referralCode = UUID.randomUUID().toString().split("-")[0];
 		
 		
-		UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode());
+		UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
 		if(null == parent)
 			throw new InvalidReferralCodeException("Invalid Referral Code Provided");
 		

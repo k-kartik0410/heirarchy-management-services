@@ -1,5 +1,7 @@
 package com.hierarchy.management.system.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.hierarchy.management.system.entities.UserEntity;
@@ -11,7 +13,7 @@ public interface UserService {
 
 	public UserEntity addUser(UserEntity user);
 	public UserEntity adduser(UserRequestModel user) throws InvalidReferralCodeException;
-	public UserEntity getUser(String id);
-	public UserEntity getUserByPhoneNo(String PhoneNo);
+	public Optional<UserEntity> getUser(String id);
+	public Optional<UserEntity> getUserByPhoneNo(String PhoneNo);
 	
 }
