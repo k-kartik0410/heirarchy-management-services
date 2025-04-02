@@ -1,6 +1,11 @@
 package com.hierarchy.management.system.model.responses;
 
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.hierarchy.management.system.entities.UserEntity;
 
 public class UserResponseModel {
 	
@@ -13,11 +18,11 @@ public class UserResponseModel {
 	@JsonProperty("referralCode")
 	private String referralCode;
 	
-	@JsonProperty("parent")
-	String parent;
-	
 	@JsonProperty("hLevel")
-	int hLevel;
+	private int hLevel;
+	
+	@JsonProperty("subordinates")
+	private Set<UserResponseModel> subordinates;
 
 	public String getFullName() {
 		return fullName;
@@ -43,14 +48,6 @@ public class UserResponseModel {
 		this.referralCode = referralCode;
 	}
 
-	public String getParent() {
-		return parent;
-	}
-
-	public void setParent(String parent) {
-		this.parent = parent;
-	}
-
 	public int gethLevel() {
 		return hLevel;
 	}
@@ -58,6 +55,26 @@ public class UserResponseModel {
 	public void sethLevel(int hLevel) {
 		this.hLevel = hLevel;
 	}
+
+	public Set<UserResponseModel> getSubordinates() {
+		return subordinates;
+	}
+
+	public void setSubordinates(Set<UserEntity> subordinates) {
+		Set<UserResponseModel> users = new HashSet<>();
+		for(UserEntity subordinate: subordinates) {
+			UserResponseModel user = new UserResponseModel();
+			user.setFullName(subordinate.getFullName());
+			user.sethLevel(subordinate.gethLevel());
+			user.setPhoneNo(subordinate.getPhoneNo());
+			user.setReferralCode(subordinate.getReferralCode());
+			user.setSubordinates(subordinate.getSubordinates());
+			users.add(user);
+		}
+		this.subordinates = users;
+	}
+	
+	
 	
 	
 

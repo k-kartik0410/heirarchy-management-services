@@ -1,8 +1,5 @@
 package com.hierarchy.management.system.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,39 +25,40 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserRequestModel> registerUser(@RequestBody UserRequestModel userRequest){
+	public ResponseEntity<UserResponseModel> registerUser(@RequestBody UserRequestModel userRequest){
 		
 		try {
 			UserEntity userEntity = userService.adduser(userRequest);
 		
-			UserRequestModel userResponseModel = new UserRequestModel(userEntity.getFullName(), 
-				userEntity.getPhoneNo(), 
-				userEntity.getReferralCode());
-		
-		
-			return new ResponseEntity<UserRequestModel>(userResponseModel, HttpStatus.CREATED);
+			UserResponseModel userResponseModel = new UserResponseModel();
+			userResponseModel.setFullName(userEntity.getFullName());
+			userResponseModel.setReferralCode(userEntity.getReferralCode());
+			userResponseModel.setPhoneNo(userEntity.getPhoneNo());
+			return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.CREATED);
 		}
 		catch(Exception e) {
 			e.printStackTrace();
-			UserRequestModel userResponseModel = new UserRequestModel();
-			return new ResponseEntity<UserRequestModel>(userResponseModel, HttpStatus.BAD_REQUEST);
+			UserResponseModel userResponseModel = new UserResponseModel();
+			return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.BAD_REQUEST);
 		}
-		
-		
-
 	} 
 	
 	@GetMapping("/{phoneNo}")
-	public ResponseEntity<UserResponseModel> getUsers(@PathVariable String phoneNo){
+	public ResponseEntity<UserResponseModel> validateUser(@PathVariable String phoneNo){
 		
 		UserResponseModel userResponseModel = new UserResponseModel();
 		UserEntity userEntity = userService.getUserByPhoneNo(phoneNo).get();
+		if(null == userEntity.getId() || userEntity.getId().isEmpty()) {
+			return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+		}
 		userResponseModel.setFullName(userEntity.getFullName());
-		userResponseModel.setParent(userEntity.getParentId());
 		userResponseModel.setPhoneNo(userEntity.getPhoneNo());
 		userResponseModel.sethLevel(userEntity.gethLevel());
 		userResponseModel.setReferralCode(userEntity.getReferralCode());
+		userResponseModel.setSubordinates(userEntity.getSubordinates());
 		ResponseEntity<UserResponseModel> usersResponse = new ResponseEntity<>(userResponseModel, HttpStatus.OK);
+		
+		
 		return usersResponse;
 		
 	}

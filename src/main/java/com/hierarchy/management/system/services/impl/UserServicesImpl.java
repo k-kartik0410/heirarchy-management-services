@@ -49,7 +49,7 @@ public class UserServicesImpl implements UserService {
 		userEntity.setFullName(userRequest.getFullName());
 		userEntity.setPhoneNo(userRequest.getPhoneNo());
 		userEntity.setReferralCode(referralCode);
-		userEntity.setParentId(parent.getId());
+		userEntity.setParent(parent);
 		userEntity.sethLevel(parent.gethLevel()+1);
 		
 		userRepository.save(userEntity);

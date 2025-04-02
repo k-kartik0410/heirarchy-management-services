@@ -1,10 +1,19 @@
 package com.hierarchy.management.system.entities;
 
+import java.util.Optional;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,24 +34,15 @@ public class UserEntity {
 		@Column(name = "REFERRAL_CODE")
 		String referralCode;
 		
-		@Column(name = "PARENT_ID")
-		String parent;
+		@ManyToOne
+		@JoinColumn(name = "PARENT_ID")
+		UserEntity parent;
+		
+		@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+		Set<UserEntity> subordinates;
 		
 		@Column(name = "H_LEVEL")
 		int hLevel;
-		
-		public UserEntity() {
-			super();
-		}
-
-		public UserEntity(String fullName, String phoneNo, String referralCode, String parent, int hLevel) {
-			super();
-			this.fullName = fullName;
-			this.phoneNo = phoneNo;
-			this.referralCode = referralCode;
-			this.parent = parent;
-			this.hLevel = hLevel;
-		}
 
 		public String getId() {
 			return id;
@@ -76,12 +76,12 @@ public class UserEntity {
 			this.referralCode = referralCode;
 		}
 
-		public String getParentId() {
-			return parent;
+		public Optional<UserEntity> getParent() {
+			return Optional.ofNullable(parent);
 		}
 
-		public void setParentId(String parentId) {
-			this.parent = parentId;
+		public void setParent(UserEntity parent) {
+			this.parent = parent;
 		}
 
 		public int gethLevel() {
@@ -91,4 +91,14 @@ public class UserEntity {
 		public void sethLevel(int hLevel) {
 			this.hLevel = hLevel;
 		}
+
+		public Set<UserEntity> getSubordinates() {
+			return subordinates;
+		}
+
+		public void setSubordinates(Set<UserEntity> subordinates) {
+			this.subordinates = subordinates;
+		}
+		
+		
 }
