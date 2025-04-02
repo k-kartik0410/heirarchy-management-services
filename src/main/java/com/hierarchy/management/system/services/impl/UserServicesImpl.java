@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.hierarchy.management.system.entities.UserEntity;
-import com.hierarchy.management.system.exceptions.InvalidReferralCodeException;
+import com.hierarchy.management.system.exceptions.InvalidRequestException;
 import com.hierarchy.management.system.model.requests.UserRequestModel;
 import com.hierarchy.management.system.repositories.UserRepository;
 import com.hierarchy.management.system.services.UserService;
@@ -37,14 +37,14 @@ public class UserServicesImpl implements UserService {
 	}
 
 	@Override
-	public UserEntity adduser(UserRequestModel userRequest) throws InvalidReferralCodeException{
+	public UserEntity adduser(UserRequestModel userRequest) throws InvalidRequestException{
 		String referralCode = UUID.randomUUID().toString().split("-")[0];
 		
 		try {
 			UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
 			
 			if(parent.getSubordinates().size() == 2) {
-				throw new InvalidReferralCodeException("Referral code has been used 2 times.");
+				throw new InvalidRequestException("Referral code has been used 2 times.");
 			}
 			UserEntity userEntity = new UserEntity();
 			userEntity.setFullName(userRequest.getFullName());
@@ -56,7 +56,7 @@ public class UserServicesImpl implements UserService {
 			return userEntity;
 		}
 		catch(NoSuchElementException ex) {
-			throw new InvalidReferralCodeException("Invalid Referral Code Provided");
+			throw new InvalidRequestException("Invalid Referral Code Provided");
 		}
 		
 	}

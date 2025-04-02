@@ -10,8 +10,8 @@ import com.hierarchy.management.system.model.responses.ErrorResponseModel;
 @ControllerAdvice
 public class GlobalExceptionHandeler {
 	
-	@ExceptionHandler(value = InvalidReferralCodeException.class)
-	public ResponseEntity<ErrorResponseModel> handleInvalidReferralCodeException(InvalidReferralCodeException ex){
+	@ExceptionHandler(value = InvalidRequestException.class)
+	public ResponseEntity<ErrorResponseModel> handleInvalidReferralCodeException(InvalidRequestException ex){
 		return new ResponseEntity<ErrorResponseModel>(new ErrorResponseModel("error", ex.getMessage()), HttpStatus.BAD_REQUEST);
 		
 	}

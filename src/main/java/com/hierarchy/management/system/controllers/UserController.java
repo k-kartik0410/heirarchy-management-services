@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hierarchy.management.system.entities.UserEntity;
-import com.hierarchy.management.system.exceptions.InvalidReferralCodeException;
 import com.hierarchy.management.system.model.requests.UserRequestModel;
 import com.hierarchy.management.system.model.responses.UserResponseModel;
 import com.hierarchy.management.system.services.UserService;
