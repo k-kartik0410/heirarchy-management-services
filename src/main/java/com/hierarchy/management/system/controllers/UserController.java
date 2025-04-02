@@ -1,5 +1,7 @@
 package com.hierarchy.management.system.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hierarchy.management.system.entities.UserEntity;
+import com.hierarchy.management.system.exceptions.InvalidRequestException;
 import com.hierarchy.management.system.model.requests.UserRequestModel;
 import com.hierarchy.management.system.model.responses.UserResponseModel;
 import com.hierarchy.management.system.services.UserService;
@@ -42,7 +45,10 @@ public class UserController {
 	public ResponseEntity<UserResponseModel> validateUser(@PathVariable String phoneNo){
 		
 		UserResponseModel userResponseModel = new UserResponseModel();
-		UserEntity userEntity = userService.getUserByPhoneNo(phoneNo).get();
+		Optional<UserEntity> user = userService.getUserByPhoneNo(phoneNo);
+		if(user.isEmpty())
+			throw new InvalidRequestException("User not found");
+		UserEntity userEntity = user.get();
 		if(null == userEntity.getId() || userEntity.getId().isEmpty()) {
 			return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
 		}
