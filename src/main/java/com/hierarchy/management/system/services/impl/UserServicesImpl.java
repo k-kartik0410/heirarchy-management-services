@@ -1,5 +1,6 @@
 package com.hierarchy.management.system.services.impl;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,22 +40,25 @@ public class UserServicesImpl implements UserService {
 	public UserEntity adduser(UserRequestModel userRequest) throws InvalidReferralCodeException{
 		String referralCode = UUID.randomUUID().toString().split("-")[0];
 		
-		
-		UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
-		if(null == parent)
+		try {
+			UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
+			
+			if(parent.getSubordinates().size() == 2) {
+				throw new InvalidReferralCodeException("Referral code has been used 2 times.");
+			}
+			UserEntity userEntity = new UserEntity();
+			userEntity.setFullName(userRequest.getFullName());
+			userEntity.setPhoneNo(userRequest.getPhoneNo());
+			userEntity.setReferralCode(referralCode);
+			userEntity.setParent(parent);
+			userEntity.sethLevel(parent.gethLevel()+1);
+			userRepository.save(userEntity);
+			return userEntity;
+		}
+		catch(NoSuchElementException ex) {
 			throw new InvalidReferralCodeException("Invalid Referral Code Provided");
+		}
 		
-		
-		UserEntity userEntity = new UserEntity();
-		userEntity.setFullName(userRequest.getFullName());
-		userEntity.setPhoneNo(userRequest.getPhoneNo());
-		userEntity.setReferralCode(referralCode);
-		userEntity.setParent(parent);
-		userEntity.sethLevel(parent.gethLevel()+1);
-		
-		userRepository.save(userEntity);
-		
-		return userEntity;
 	}
 
 }

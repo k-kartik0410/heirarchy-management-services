@@ -3,8 +3,6 @@ package com.hierarchy.management.system.entities;
 import java.util.Optional;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

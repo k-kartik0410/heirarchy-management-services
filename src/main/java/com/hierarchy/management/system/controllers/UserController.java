@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hierarchy.management.system.entities.UserEntity;
+import com.hierarchy.management.system.exceptions.InvalidReferralCodeException;
 import com.hierarchy.management.system.model.requests.UserRequestModel;
 import com.hierarchy.management.system.model.responses.UserResponseModel;
 import com.hierarchy.management.system.services.UserService;
@@ -25,22 +26,17 @@ public class UserController {
 	UserService userService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<UserResponseModel> registerUser(@RequestBody UserRequestModel userRequest){
+	public ResponseEntity<UserResponseModel> registerUser(@RequestBody UserRequestModel userRequest) {
+
+		UserEntity userEntity = userService.adduser(userRequest);
+
+		UserResponseModel userResponseModel = new UserResponseModel();
+		userResponseModel.setFullName(userEntity.getFullName());
+		userResponseModel.setReferralCode(userEntity.getReferralCode());
+		userResponseModel.setPhoneNo(userEntity.getPhoneNo());
 		
-		try {
-			UserEntity userEntity = userService.adduser(userRequest);
-		
-			UserResponseModel userResponseModel = new UserResponseModel();
-			userResponseModel.setFullName(userEntity.getFullName());
-			userResponseModel.setReferralCode(userEntity.getReferralCode());
-			userResponseModel.setPhoneNo(userEntity.getPhoneNo());
-			return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.CREATED);
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			UserResponseModel userResponseModel = new UserResponseModel();
-			return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<UserResponseModel>(userResponseModel, HttpStatus.CREATED);
+
 	} 
 	
 	@GetMapping("/{phoneNo}")

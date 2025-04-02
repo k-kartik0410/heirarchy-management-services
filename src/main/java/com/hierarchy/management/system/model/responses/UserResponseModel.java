@@ -1,7 +1,6 @@
 package com.hierarchy.management.system.model.responses;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
