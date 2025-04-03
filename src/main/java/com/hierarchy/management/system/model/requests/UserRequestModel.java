@@ -17,6 +17,9 @@ public class UserRequestModel {
 	@JsonProperty("referralCode")
 	private String referralCode;
 	
+	@JsonProperty("isRoot")
+	private boolean isRoot;
+	
 	public UserRequestModel() {
 		super();
 	}
@@ -51,6 +54,16 @@ public class UserRequestModel {
 	public void setReferralCode(String referralCode) {
 		this.referralCode = referralCode;
 	}
+
+	public boolean isRoot() {
+		return isRoot;
+	}
+
+	public void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
+	
+	
 	
 	
 

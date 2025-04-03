@@ -26,10 +26,10 @@ public class UserEntity {
 		@Column(name = "FULL_NAME", nullable = false)
 		String fullName;
 		
-		@Column(name = "PHONE", nullable = false)
+		@Column(name = "PHONE", nullable = false, unique = true)
 		String phoneNo;
 		
-		@Column(name = "REFERRAL_CODE")
+		@Column(name = "REFERRAL_CODE", unique = true)
 		String referralCode;
 		
 		@ManyToOne

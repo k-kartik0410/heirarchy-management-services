@@ -41,19 +41,32 @@ public class UserServicesImpl implements UserService {
 		String referralCode = UUID.randomUUID().toString().split("-")[0];
 		
 		try {
-			UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
 			
-			if(parent.getSubordinates().size() == 2) {
-				throw new InvalidRequestException("Referral code has been used 2 times.");
+			if(userRequest.isRoot()) {
+				UserEntity userEntity = new UserEntity();
+				userEntity.setFullName(userRequest.getFullName());
+				userEntity.setPhoneNo(userRequest.getPhoneNo());
+				userEntity.setReferralCode(referralCode);
+				userEntity.setParent(null);
+				userEntity.sethLevel(0);
+				userRepository.save(userEntity);
+				return userEntity;
 			}
-			UserEntity userEntity = new UserEntity();
-			userEntity.setFullName(userRequest.getFullName());
-			userEntity.setPhoneNo(userRequest.getPhoneNo());
-			userEntity.setReferralCode(referralCode);
-			userEntity.setParent(parent);
-			userEntity.sethLevel(parent.gethLevel()+1);
-			userRepository.save(userEntity);
-			return userEntity;
+			else {
+				UserEntity parent = userRepository.getByReferralCode(userRequest.getReferralCode()).get();
+				
+				if(parent.getSubordinates().size() == 2) {
+					throw new InvalidRequestException("Referral code has been used 2 times.");
+				}
+				UserEntity userEntity = new UserEntity();
+				userEntity.setFullName(userRequest.getFullName());
+				userEntity.setPhoneNo(userRequest.getPhoneNo());
+				userEntity.setReferralCode(referralCode);
+				userEntity.setParent(parent);
+				userEntity.sethLevel(parent.gethLevel()+1);
+				userRepository.save(userEntity);
+				return userEntity;
+			}
 		}
 		catch(NoSuchElementException ex) {
 			throw new InvalidRequestException("Invalid Referral Code Provided");
