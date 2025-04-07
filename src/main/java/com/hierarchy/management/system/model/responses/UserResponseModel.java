@@ -20,6 +20,9 @@ public class UserResponseModel {
 	@JsonProperty("hLevel")
 	private int hLevel;
 	
+	@JsonProperty("levelAchived")
+	private int levelAchieved;
+	
 	@JsonProperty("subordinates")
 	private Set<UserResponseModel> subordinates;
 
@@ -53,6 +56,14 @@ public class UserResponseModel {
 
 	public void sethLevel(int hLevel) {
 		this.hLevel = hLevel;
+	}
+	
+	public int getLevelAchieved() {
+		return levelAchieved;
+	}
+
+	public void setLevelAchieved(int levelAchieved) {
+		this.levelAchieved = levelAchieved;
 	}
 
 	public Set<UserResponseModel> getSubordinates() {

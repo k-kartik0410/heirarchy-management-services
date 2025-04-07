@@ -57,11 +57,31 @@ public class UserController {
 		userResponseModel.sethLevel(userEntity.gethLevel());
 		userResponseModel.setReferralCode(userEntity.getReferralCode());
 		userResponseModel.setSubordinates(userEntity.getSubordinates());
+		userResponseModel.setLevelAchieved(levelAchieved(userResponseModel));
 		ResponseEntity<UserResponseModel> usersResponse = new ResponseEntity<>(userResponseModel, HttpStatus.OK);
 		
 		
 		return usersResponse;
 		
+	}
+	
+	private int levelAchieved(UserResponseModel userResponse) {
+		int mLevel = 0;
+		
+		if(userResponse.getSubordinates().size() > 0 && userResponse.getSubordinates().size() <= 2) {
+			
+			for(UserResponseModel user: userResponse.getSubordinates()) {
+				int level = levelAchieved(user);
+				user.setLevelAchieved(level);
+				if(level > mLevel)
+					mLevel = level;
+			}
+			if(userResponse.getSubordinates().size() == 2)
+				return mLevel+1;
+			if(userResponse.getSubordinates().size() < 2)
+				return mLevel;}
+		
+		return mLevel;
 	}
 	
 	
