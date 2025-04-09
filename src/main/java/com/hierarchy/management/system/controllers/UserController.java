@@ -66,14 +66,14 @@ public class UserController {
 	}
 	
 	private int levelAchieved(UserResponseModel userResponse) {
-		int mLevel = 0;
+		int mLevel = 2147483640;
 		
 		if(userResponse.getSubordinates().size() > 0 && userResponse.getSubordinates().size() <= 2) {
 			
 			for(UserResponseModel user: userResponse.getSubordinates()) {
 				int level = levelAchieved(user);
 				user.setLevelAchieved(level);
-				if(level > mLevel)
+				if(level < mLevel)
 					mLevel = level;
 			}
 			if(userResponse.getSubordinates().size() == 2)
@@ -81,7 +81,7 @@ public class UserController {
 			if(userResponse.getSubordinates().size() < 2)
 				return mLevel;}
 		
-		return mLevel;
+		return 0;
 	}
 	
 	
